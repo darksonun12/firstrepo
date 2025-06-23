@@ -1,0 +1,143 @@
+name: Daily YouTube Video Uploads
+
+on:
+  # Allow manual runs from the GitHub UI
+  workflow_dispatch:
+  
+  # Daily scheduled runs
+  schedule:
+    # Run daily at 5 PM UTC (17:00)
+    - cron: '0 17 * * *'
+
+# This workflow handles anime content uploads for educational purposes only
+jobs:
+  upload-videos:
+    name: Upload Videos to YouTube Channels
+    runs-on: ubuntu-latest
+    timeout-minutes: 300  # 5 hour execution limit for more videos
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2 httplib2 requests
+
+      - name: Create temp directory
+        run: |
+          mkdir -p temp_download
+          # For debugging
+          echo "Working directory structure:"
+          ls -la
+          
+      - name: Prepare channel list
+        id: prepare_channels
+        run: |
+          # Define all channels in order of priority
+          # Using multiline output format to preserve spaces in channel names
+          echo "channels<<EOF" >> $GITHUB_OUTPUT
+          echo "ShortsExplain" >> $GITHUB_OUTPUT
+          echo "Shorts_Explain" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+      - name: Process channels sequentially
+        id: channel_upload
+        run: |
+          echo "Starting sequential channel uploads"
+          
+          # Read channel array from multiline output
+          readarray -t CHANNELS <<< "${{ steps.prepare_channels.outputs.channels }}"
+          
+          # Store which channels succeeded and which failed
+          SUCCEEDED_CHANNELS=()
+          FAILED_CHANNELS=()
+          
+          # Flag to track if we hit upload limits across multiple channels
+          GLOBAL_LIMIT_REACHED=false
+          
+          # Process each channel one by one
+          for channel in "${CHANNELS[@]}"; do
+            echo "============================================="
+            echo "Processing channel: $channel"
+            echo "============================================="
+            
+            # Generate random number of videos to upload (3-6)
+            NUM_VIDEOS=$((RANDOM % 4 + 3))
+            echo "Will attempt to upload $NUM_VIDEOS videos to $channel"
+            
+            # Try uploading with multiple attempts if needed
+            MAX_ATTEMPTS=3
+            SUCCESS=false
+            
+            for attempt in $(seq 1 $MAX_ATTEMPTS); do
+              if [ "$GLOBAL_LIMIT_REACHED" = true ]; then
+                echo "Global upload limit reached. Skipping remaining uploads."
+                break
+              fi
+              
+              echo "Attempt $attempt of $MAX_ATTEMPTS for $channel"
+              # Add a small delay between attempts
+              if [ $attempt -gt 1 ]; then
+                sleep $(( RANDOM % 60 + 30 ))  # Random delay between 30-90 seconds
+              fi
+              
+              # Run the upload script with public privacy
+              python upload_gdrive_videos.py --channel-name "$channel" --limit $NUM_VIDEOS --privacy-status "public"
+              EXIT_CODE=$?
+              
+              if [ $EXIT_CODE -eq 0 ]; then
+                echo "✅ Successfully uploaded to $channel on attempt $attempt"
+                SUCCEEDED_CHANNELS+=("$channel")
+                SUCCESS=true
+                break
+              elif [ $EXIT_CODE -eq 100 ]; then
+                echo "⚠️ Daily upload limit reached for $channel"
+                if [ ${#SUCCEEDED_CHANNELS[@]} -ge 6 ]; then
+                  # If we've already processed at least 6 channels successfully,
+                  # assume we might be hitting global limits
+                  echo "Enough channels processed, might be hitting global limits"
+                  GLOBAL_LIMIT_REACHED=true
+                fi
+                # We'll count this as a success since it's expected behavior
+                SUCCEEDED_CHANNELS+=("$channel")
+                SUCCESS=true
+                break
+              elif [ $attempt -lt $MAX_ATTEMPTS ]; then
+                echo "❌ Upload attempt failed, waiting before retry..."
+              fi
+            done
+            
+            if [ "$SUCCESS" = false ]; then
+              echo "❌ All attempts failed for $channel"
+              FAILED_CHANNELS+=("$channel")
+            fi
+            
+            # Add a delay between channels to avoid rate limits
+            echo "Waiting before processing next channel..."
+            sleep $(( RANDOM % 90 + 60 ))  # Random delay between 60-150 seconds
+          done
+          
+          # Summary
+          echo "============================================="
+          echo "Upload Summary"
+          echo "============================================="
+          echo "Successfully processed channels: ${SUCCEEDED_CHANNELS[*]}"
+          echo "Failed channels: ${FAILED_CHANNELS[*]}"
+          if [ ${#FAILED_CHANNELS[@]} -eq 0 ]; then
+            echo "🎉 All channels processed successfully!"
+          else
+            echo "⚠️ Some channels failed. Check logs for details."
+          fi
+          
+      - name: Cleanup
+        if: always()  # Run even if previous steps failed
+        run: |
+          echo "Cleaning up temporary files"
+          rm -rf temp_download/*
