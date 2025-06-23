@@ -6,8 +6,8 @@ on:
   
   # Daily scheduled runs
   schedule:
-    # Run daily at 10 PM UTC (22:00)
-    - cron: '0 22 * * *'
+    # Run daily at 1 AM UTC (01:00)
+    - cron: '0 1 * * *'
 
 # This workflow handles anime content uploads for educational purposes only
 jobs:
