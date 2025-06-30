@@ -31,7 +31,7 @@ from google.auth.transport.requests import Request
 # Constants from Google Drive script
 DRIVE_SHEETS_SCOPES = ['https://www.googleapis.com/auth/drive', 
                        'https://www.googleapis.com/auth/spreadsheets']
-TARGET_FOLDER_NAME = "All video"  # Updated folder name for video uploads
+TARGET_FOLDER_NAME = "AllVideos"  # Updated folder name for video uploads
 DIRECT_FOLDER_MODE = True  # Set to True to process videos directly from the main folder instead of subfolders
 SPREADSHEET_ID = '1sqrNVHGo181vGsl1hF5GPUXiQZBUmC_O0KLNBFdMa9g'  # Updated spreadsheet ID
 SHEET_NAME = 'Sheet1'
