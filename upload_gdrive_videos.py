@@ -54,9 +54,9 @@ CHANNEL_MAPPINGS_FILE = 'channel_names.json'
 DEFAULT_YOUTUBE_CHANNEL = "AniSnap"  # Default channel to use if none specified
 
 # Telegram Bot configuration
-TELEGRAM_BOT_TOKEN = "7573835190:AAF7_F_17m03m_bHBT7-bXQy9mNgMlUrqG4"
-TELEGRAM_CHAT_ID = "-1002882576277"  # Updated chat ID with -100 prefix
-TELEGRAM_THREAD_ID = 2  # Topic/Thread ID from the message
+TELEGRAM_BOT_TOKEN = "7603358162:AAGITSily1F2J2j_dvSHno1ST8UmRdiWSDw"
+TELEGRAM_CHAT_ID = "-1002882576277"  # Chat ID from the message link
+TELEGRAM_THREAD_ID = 263  # Thread ID from the message link
 TELEGRAM_NOTIFICATIONS_ENABLED = True  # Set to False to disable notifications
 
 # New spreadsheet columns for tracking uploads
@@ -72,7 +72,7 @@ UPLOAD_TRACKING_COLUMNS = [
 def get_google_drive_credentials():
     """Get credentials for Google Drive and Sheets API."""
     # Google Drive link for credentials.json
-    CREDENTIALS_DRIVE_LINK = "https://drive.google.com/file/d/1QMnauR8rdbZWWR7su9ECTSFzP1EYVbPq/view?usp=sharing"
+    CREDENTIALS_DRIVE_LINK = "https://drive.google.com/file/d/1YtEywz1VR6YMdKmMjwTo2EtDcNjwUVHS/view?usp=drive_link"
     credentials_file = os.path.join('gd', 'credentials.json')
     
     # Try to download from Google Drive first
@@ -122,8 +122,8 @@ def get_youtube_credentials(channel_id=None, channel_name=None):
     
     # Channel name to Drive file ID mapping
     CHANNEL_DRIVE_LINKS = {
-        "CineQuick": "https://drive.google.com/file/d/1yGleDXneNlitMOKOi5DUQjd_N4atdj7g/view?usp=sharing",
-        "PlotPulse": "https://drive.google.com/file/d/1WTQn1OWToflbUwMafbBxafDbXOUMo8XC/view?usp=sharing"
+        "ChhotiKahaniBadiBaat": "https://drive.google.com/file/d/12qZIkIH4mL95gx_JxF-d8upbcIKodITS/view?usp=drive_link",
+        "KahaniChitra": "https://drive.google.com/file/d/1U8d8EA3RlPQ8Jx3Nt-72_TjYNVX-hUvR/view?usp=drive_link"
     }
     
     if not channel_name and not channel_id:
@@ -189,8 +189,8 @@ def list_available_youtube_channels():
     """List all channels that have saved YouTube tokens on Google Drive."""
     # Channel token Google Drive links
     CHANNEL_DRIVE_LINKS = {
-        "CineQuick": "https://drive.google.com/file/d/1yGleDXneNlitMOKOi5DUQjd_N4atdj7g/view?usp=sharing",
-        "PlotPulse": "https://drive.google.com/file/d/1WTQn1OWToflbUwMafbBxafDbXOUMo8XC/view?usp=sharing"
+        "ChhotiKahaniBadiBaat": "https://drive.google.com/file/d/12qZIkIH4mL95gx_JxF-d8upbcIKodITS/view?usp=drive_link",
+        "KahaniChitra": "https://drive.google.com/file/d/1U8d8EA3RlPQ8Jx3Nt-72_TjYNVX-hUvR/view?usp=drive_link"
     }
     
     print("\nAvailable YouTube Channels:")

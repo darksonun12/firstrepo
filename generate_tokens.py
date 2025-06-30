@@ -28,7 +28,7 @@ If you encounter any errors, simply restart the script.
 # Path configurations
 CLIENT_SECRETS_DIR = os.path.abspath(os.path.dirname(__file__))
 TOKEN_DIR = os.path.join(CLIENT_SECRETS_DIR, "tokens")
-CLIENT_FILES = ["gmail4.json"]
+CLIENT_FILES = ["gmail5.json"]
 
 # Create tokens directory if it doesn't exist
 if not os.path.exists(TOKEN_DIR):
