@@ -122,8 +122,8 @@ def get_youtube_credentials(channel_id=None, channel_name=None):
     
     # Channel name to Drive file ID mapping
     CHANNEL_DRIVE_LINKS = {
-        "ChhotiKahaniBadiBaat": "https://drive.google.com/file/d/1t0UBc2uWHaLSWhcyAZEcPPlAfzAAt1ED/view?usp=drive_link",
-        "KahaniChitra": "https://drive.google.com/file/d/1fg2Bx0lklB2NtTFscWCFnEtg_64ewlOf/view?usp=drive_link"
+        "ChhotiKahaniBadiBaat": "https://drive.google.com/file/d/1tpJoekhvM8o6zL4etoez0oJ2VbuF0u6a/view?usp=sharing",
+        "KahaniChitra": "https://drive.google.com/file/d/1ZPq8lIMkLu6WtexQVozg1QuT6TwwDlHC/view?usp=sharing"
     }
     
     if not channel_name and not channel_id:
@@ -189,8 +189,8 @@ def list_available_youtube_channels():
     """List all channels that have saved YouTube tokens on Google Drive."""
     # Channel token Google Drive links
     CHANNEL_DRIVE_LINKS = {
-        "ChhotiKahaniBadiBaat": "https://drive.google.com/file/d/1t0UBc2uWHaLSWhcyAZEcPPlAfzAAt1ED/view?usp=drive_link",
-        "KahaniChitra": "https://drive.google.com/file/d/1fg2Bx0lklB2NtTFscWCFnEtg_64ewlOf/view?usp=drive_link"
+        "ChhotiKahaniBadiBaat": "https://drive.google.com/file/d/1tpJoekhvM8o6zL4etoez0oJ2VbuF0u6a/view?usp=sharing",
+        "KahaniChitra": "https://drive.google.com/file/d/1ZPq8lIMkLu6WtexQVozg1QuT6TwwDlHC/view?usp=sharing"
     }
     
     print("\nAvailable YouTube Channels:")
